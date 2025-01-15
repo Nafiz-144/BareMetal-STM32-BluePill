@@ -5,7 +5,7 @@ void delay(int rep);
 int main(void)
 {
   RCC->APB2ENR |= 0x10;  // 0b10000
-  GPIOC->CRH &= 0xFF0FFFFF;
+  GPIOA->CRH &= 0xFFFF0FFF;
   GPIOC->CRH |= 0x00300000;
   GPIOC->ODR |= 0x2000;
 

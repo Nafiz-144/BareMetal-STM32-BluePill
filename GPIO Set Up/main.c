@@ -3,7 +3,7 @@
 void pinA();
 void pinB();
 void pinC();
-void delay(uint32_t ms);
+//void delay(uint32_t ms);
 
 int main() {
     pinA();
@@ -11,11 +11,11 @@ int main() {
     pinC();
     while (1) {
         GPIOA->ODR ^= (1<<12);
-        delay(500);
+     //   delay(500);
         GPIOC->ODR ^= (1<<14);
-        delay(100);
+      //  delay(100);
         GPIOB->ODR ^= (1<<3);
-        delay(200);
+        //delay(200);
     }
 }
 
@@ -37,6 +37,6 @@ void pinC() {
     GPIOC->CRH |= (1<<25);
 }
 
-void delay() {
+/*void delay() {
     for (int i = 0; i < 1000000; i++);
-}
+}*/

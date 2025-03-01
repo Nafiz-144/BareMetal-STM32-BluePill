@@ -26,44 +26,12 @@ Project File Date:  02/13/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'D:\Keil Code\ARM\ARMCLANG\Bin'
-Rebuild target 'Target_1'
+Build target 'Target_1'
+armclang: error: no such file or directory: 'systick_time.c'
+armclang: error: no input files
 compiling systick_time.c...
 compiling system_stm32f10x.c...
-compiling main.c...
-assembling startup_stm32f10x_md.s...
-gp_drive.c(29): warning: variable 'CR' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-   29 |         else if(PORT == 3)
-      |                 ^~~~~~~~~
-gp_drive.c(35): note: uninitialized use occurs here
-   35 |         *CR &= ~(0xf<<(tPin)*4);
-      |          ^~
-gp_drive.c(29): note: remove the 'if' if its condition is always true
-   29 |         else if(PORT == 3)
-      |              ^~~~~~~~~~~~~
-   30 |                 {
-gp_drive.c(7): note: initialize the variable 'CR' to silence this warning
-    7 |         volatile unsigned long * CR;
-      |                                    ^
-      |                                     = 0
-gp_drive.c(53): warning: variable 'IDR' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-   53 |         else if(PORT == 3)
-      |                 ^~~~~~~~~
-gp_drive.c(57): note: uninitialized use occurs here
-   57 |                 state =  ((*IDR & (1<<pin))>>pin)  ;
-      |                             ^~~
-gp_drive.c(53): note: remove the 'if' if its condition is always true
-   53 |         else if(PORT == 3)
-      |              ^~~~~~~~~~~~~
-   54 |                 {
-gp_drive.c(41): note: initialize the variable 'IDR' to silence this warning
-   41 |         volatile unsigned long * IDR;
-      |                                     ^
-      |                                      = 0
-2 warnings generated.
-compiling gp_drive.c...
-linking...
-Program Size: Code=1712 RO-data=252 RW-data=0 ZI-data=1640  
-".\Objects\GPIO Input.axf" - 0 Error(s), 2 Warning(s).
+".\Objects\GPIO Input.axf" - 2 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -90,11 +58,12 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE@6.1.0
 
    * Component: Keil::Device:Startup@1.0.0
-      Source file:   Device/Source/ARM/STM32F1xx_OPT.s
-      Source file:   Device/Source/ARM/startup_stm32f10x_md.s
-      Include file:  RTE_Driver/Config/RTE_Device.h
       Source file:   Device/Source/system_stm32f10x.c
-Build Time Elapsed:  00:00:01
+      Include file:  RTE_Driver/Config/RTE_Device.h
+      Source file:   Device/Source/ARM/startup_stm32f10x_md.s
+      Source file:   Device/Source/ARM/STM32F1xx_OPT.s
+Target not created.
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

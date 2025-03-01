@@ -1,110 +1,62 @@
-#include "stm32f10x.h"    
-#include "gp_drive.h"
+#include "stm32f10x.h"
 
+void init_GP(GPIO_TypeDef *PORT, unsigned short PIN, unsigned short DIR, unsigned short OPT) {
+    volatile uint32_t *CR;
+    unsigned short tPin = PIN;
+    
+    if (PIN > 7) {
+        tPin -= 8;
+        CR = &PORT->CRH;  // High register for pins 8-15
+    } else {
+        CR = &PORT->CRL;  // Low register for pins 0-7
+    }
 
-void init_GP(unsigned short PORT,unsigned short PIN,unsigned short DIR,unsigned short OPT)
-{
-	volatile unsigned long * CR;
-	unsigned short tPin = PIN;
-	unsigned short offset = 0x00;
-	
-		if(PIN > 7)
-		{
-			tPin -=8;
-			offset = 0x01;
-		}
-		
+    // Enable Clock for GPIO
+    if (PORT == GPIOA) {
+        RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
+    } else if (PORT == GPIOB) {
+        RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
+    } else if (PORT == GPIOC) {
+        RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+    }
 
-	if(PORT == 1)
-		{
-			RCC_APBENR |= 0x4;
-
-			CR = (volatile unsigned long *)(&GPIO_A + offset);
-		}
-	else if(PORT == 2)
-		{
-		RCC_APBENR |= 0x8;
-		CR = (volatile unsigned long *)(&GPIO_B+ offset);
-		}
-	else if(PORT == 3)
-		{
-		RCC_APBENR |= 0x10;
-		CR = (volatile unsigned long *)(&GPIO_C + offset);
-		}
-
-	*CR &= ~(0xf<<(tPin)*4);
-	*CR |= ((DIR<<(tPin*4)) | (OPT<<(tPin*4+2)));
+    // Configure Mode and Configuration
+    *CR &= ~(0xF << (tPin * 4)); // Clear existing settings
+    *CR |= ((DIR << (tPin * 4)) | (OPT << (tPin * 4 + 2)));
 }
 
-int R_GP(unsigned short PORT,unsigned short pin)
-{
-	volatile unsigned long * IDR;
-	unsigned long offset = 0x02;
-	int state;
-	
-	if(PORT == 1)
-		{
-			IDR = (volatile unsigned long *)(&GPIO_A + offset);
-		}
-	else if(PORT == 2)
-		{
-		IDR = (volatile unsigned long *)(&GPIO_B+ offset);
-		}
-	else if(PORT == 3)
-		{
-		IDR = (volatile unsigned long *)(&GPIO_C+ offset);
-		}
-		state =  ((*IDR & (1<<pin))>>pin)  ;
-		
-		return state;
+int R_GP(GPIO_TypeDef *PORT, unsigned short PIN) {
+    return (PORT->IDR & (1 << PIN)) ? 1 : 0;
 }
 
-void W_GP(unsigned short PORT,unsigned short pin, unsigned short STATUS)
-{
-	volatile unsigned long * ODR;
-	unsigned long offset = 0x03;
-	if(PORT == 1)
-		{
-			ODR = (volatile unsigned long *)(&GPIO_A + offset);
-		}
-	else if(PORT == 2)
-		{
-		ODR = (volatile unsigned long *)(&GPIO_B+ offset);
-		}
-	else if(PORT == 3)
-		{
-		ODR = (volatile unsigned long *)(&GPIO_C+ offset);
-		}
-	STATUS ? (*ODR |= (STATUS<<pin)) : (*ODR &= ~(1<<pin));
+void W_GP(GPIO_TypeDef *PORT, unsigned short PIN, unsigned short STATUS) {
+    if (STATUS) {
+        PORT->ODR |= (1 << PIN);
+    } else {
+        PORT->ODR &= ~(1 << PIN);
+    }
 }
 
-void toggle_GP(unsigned short Port,unsigned short pin)
-{
-	if(R_GP(Port,pin))
-		{
-			W_GP(Port,pin,0);
-		}
-	else
-		{
-			W_GP(Port,pin,1);
-		}
+void toggle_GP(GPIO_TypeDef *PORT, unsigned short PIN) {
+    if (R_GP(PORT, PIN)) {
+        W_GP(PORT, PIN, 0);
+    } else {
+        W_GP(PORT, PIN, 1);
+    }
 }
 
-
-
-
-
-void PINc(unsigned short pin, unsigned short STATUS)
-{
-	STATUS ? (GPIOC->ODR |= (STATUS<<pin)) : (GPIOC->ODR &= ~(1<<pin));
+void PINc(unsigned short PIN, unsigned short STATUS) {
+    if (STATUS) {
+        GPIOC->ODR |= (1 << PIN);
+    } else {
+        GPIOC->ODR &= ~(1 << PIN);
+    }
 }
 
-void B_init(void)
-{
-	init_GP(PC,13,OUT50,O_GP_PP);
+void B_init(void) {
+    init_GP(GPIOC, 13, 2, 0);  // 2 = Output mode, 50MHz; 0 = Push-Pull
 }
 
-void BLED(unsigned short state)
-{
-	W_GP(PC,13,state);
+void BLED(unsigned short state) {
+    W_GP(GPIOC, 13, state);
 }

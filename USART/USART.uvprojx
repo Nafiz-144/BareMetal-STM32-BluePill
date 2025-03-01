@@ -111,8 +111,8 @@
         <DllOption>
           <SimDllName>SARMCM3.DLL</SimDllName>
           <SimDllArguments> -REMAP</SimDllArguments>
-          <SimDlgDll>DCM.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pCM3</SimDlgDllArguments>
+          <SimDlgDll>DARMSTM.DLL</SimDlgDll>
+          <SimDlgDllArguments>-pstm32f103c8</SimDlgDllArguments>
           <TargetDllName>SARMCM3.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TCM.DLL</TargetDlgDll>
@@ -388,6 +388,26 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>gp_drive.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\gp_drive.h</FilePath>
+            </File>
+            <File>
+              <FileName>gp_drive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\gp_drive.c</FilePath>
+            </File>
+            <File>
+              <FileName>systick_time.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\systick_time.h</FilePath>
+            </File>
+            <File>
+              <FileName>systick_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\systick_time.c</FilePath>
             </File>
           </Files>
         </Group>

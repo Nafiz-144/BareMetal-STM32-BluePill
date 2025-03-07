@@ -8,7 +8,7 @@ RCC->APB2ENR |=(1<<4);
 	GPIOC->CRH |=(1<<20);
 	while(1){
 		systickdelay(1000);
-		GPIOC->ODR ^= (1<<13);}
+ 		GPIOC->ODR ^= (1<<13);}
 	
 
 	

@@ -1,63 +1,60 @@
-#include "stm32f10x.h"  // Device header for STM32F103C8
+#include "stm32f10x.h"                  // Device header
+// Define register addresses
+#define RCC_APB2ENR   (*(volatile uint32_t*)0x40021018)
+#define GPIOA_CRL     (*(volatile uint32_t*)0x40010800)
+#define GPIOA_ODR     (*(volatile uint32_t*)0x4001080C)
+#define GPIOC_CRH     (*(volatile uint32_t*)0x40011004)
+#define GPIOC_IDR     (*(volatile uint32_t*)0x40011008)
 
-// Led : PA5
-// Button: PC13
+#define AFIO_EXTICR4  (*(volatile uint32_t*)0x40010014)
+#define EXTI_IMR      (*(volatile uint32_t*)0x40010400)
+#define EXTI_FTSR     (*(volatile uint32_t*)0x4001040C)
+#define EXTI_PR       (*(volatile uint32_t*)0x40010414)
 
-void systickDelayMs(int n);
+#define NVIC_ISER1    (*(volatile uint32_t*)0xE000E104)
+	
+int main(void){
+	__disable_irq(); //disable interrupt globally 
+	 RCC_APB2ENR |= (1 << 2) | (1 << 4) | (1 << 0);
+	 
+	GPIOA->CRL &= 0XFF0FFFFF;
+	GPIOA->CRL |= (1<<20);
+	  // Select Port C for EXTI13
+	GPIOC->CRH &=0XFF0FFFFF;
+	GPIOC->CRH |=(1<<21);
+	 // Unmask EXTI13 (Enable Interrupt Mask)
+	  EXTI_IMR |= (1 << 13);
+	
+ // Select falling edge trigger for EXTI13
+    EXTI_FTSR |= (1 << 13);
 
-int counter = 0;
+    // Enable EXTI15_10 interrupt in NVIC (IRQ40 in ISER1)
+    NVIC_ISER1 |= (1 << 8);  // (40 - 32) = 8th bit in ISER1
 
-int main(void)
-{
-    __disable_irq();
-
-    // Enable clock access to GPIOA and GPIOC
-    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_IOPCEN | RCC_APB2ENR_AFIOEN;
-
-    // Configure PA5 as output
-    GPIOA->CRL &= ~(0xF << 20); // Clear mode and configuration bits for PA5
-    GPIOA->CRL |= (0x1 << 20);  // Set PA5 as output, max speed 10 MHz
-    GPIOA->CRL &= ~(0x3 << 22); // Set PA5 as general purpose output push-pull
-
-    // Configure PC13 as input
-    GPIOC->CRH &= ~(0xF << 20); // Clear mode and configuration bits for PC13
-    GPIOC->CRH |= (0x4 << 20);  // Set PC13 as input with pull-up/pull-down
-
-    // Select Port C for EXTI13
-    AFIO->EXTICR[3] = AFIO_EXTICR4_EXTI13_PC;
-
-    // Unmask EXTI13
-    EXTI->IMR |= EXTI_IMR_MR13;
-
-    // Select falling edge trigger for EXTI13
-    EXTI->FTSR |= EXTI_FTSR_TR13;
-
-    // Enable EXTI15_10 interrupt in NVIC
-    NVIC_EnableIRQ(EXTI15_10_IRQn);
-
+    // Enable interrupts globally
     __enable_irq();
 
-    while(1){}
+    while(1) {}
 }
 
+// Interrupt handler for EXTI15_10 (Handles PC13 Button Press)
 void EXTI15_10_IRQHandler(void) {
-    if (EXTI->PR & EXTI_PR_PR13) {
-        // Toggle PA5
-        GPIOA->ODR ^= GPIO_ODR_ODR5;
-        // Clear pending bit
-        EXTI->PR = EXTI_PR_PR13;
+    if (EXTI_PR & (1 << 13)) {  // Check if EXTI13 triggered
+        GPIOA_ODR ^= (1 << 5);   // Toggle PA5 (LED)
+        EXTI_PR |= (1 << 13);    // Clear pending bit
     }
 }
 
+// SysTick delay function (1ms delay)
 void systickDelayMs(int n) {
-    SysTick->LOAD = 72000; // Reload with number of clocks per millisecond (72 MHz clock)
-    SysTick->VAL = 0;      // Clear current value register
-    SysTick->CTRL = 0x5;   // Enable SysTick
+    SysTick->LOAD = 72000;  // Load value for 1ms (72MHz system clock)
+    SysTick->VAL = 0;       // Reset counter
+    SysTick->CTRL = 5;      // Enable SysTick, no interrupt
 
     for (int i = 0; i < n; i++) {
-        // Wait until the COUNT flag is set
-        while ((SysTick->CTRL & 0x10000) == 0);
+        while ((SysTick->CTRL & 0x10000) == 0);  // Wait for COUNTFLAG
     }
 
-    SysTick->CTRL = 0;
-}
+    SysTick->CTRL = 0;  // Disable SysTick
+} 
+	

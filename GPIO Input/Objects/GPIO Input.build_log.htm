@@ -26,10 +26,13 @@ Project File Date:  02/13/2025
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.22', folder: 'D:\Keil Code\ARM\ARMCLANG\Bin'
-Build target 'Target_1'
+Rebuild target 'Target_1'
 armclang: error: no such file or directory: 'systick_time.c'
 armclang: error: no input files
 compiling systick_time.c...
+assembling startup_stm32f10x_md.s...
+compiling main.c...
+compiling gp_drive.c...
 compiling system_stm32f10x.c...
 ".\Objects\GPIO Input.axf" - 2 Error(s), 0 Warning(s).
 
@@ -58,9 +61,9 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE@6.1.0
 
    * Component: Keil::Device:Startup@1.0.0
+      Source file:   Device/Source/ARM/startup_stm32f10x_md.s
       Source file:   Device/Source/system_stm32f10x.c
       Include file:  RTE_Driver/Config/RTE_Device.h
-      Source file:   Device/Source/ARM/startup_stm32f10x_md.s
       Source file:   Device/Source/ARM/STM32F1xx_OPT.s
 Target not created.
 Build Time Elapsed:  00:00:00

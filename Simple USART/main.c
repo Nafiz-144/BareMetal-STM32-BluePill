@@ -1,4 +1,4 @@
-#include "stm32f10x.h"     // Device header
+/*#include "stm32f10x.h"     // Device header
 char chat='A';
 
 int main(void){
@@ -25,7 +25,7 @@ while (1) {
     USART2->DR = chat; // Send character
 }
 }
-	
+	*/
 	
 	
 	

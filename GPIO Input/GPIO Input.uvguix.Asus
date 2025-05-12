@@ -25,7 +25,7 @@
     <View>
       <WinId>204</WinId>
       <ViewName>Performance Analyzer</ViewName>
-      <TableColWidths>76 139 139 576</TableColWidths>
+      <TableColWidths>552 139 139 100</TableColWidths>
     </View>
   </SECTreeCtrl>
 
@@ -34,7 +34,7 @@
       <WinId>35141</WinId>
       <ViewName>Event Statistics</ViewName>
       <UserString></UserString>
-      <TableColWidths>250 50 634</TableColWidths>
+      <TableColWidths>200 50 700</TableColWidths>
     </View>
     <View>
       <WinId>1506</WinId>
@@ -64,7 +64,7 @@
       <WinId>2506</WinId>
       <ViewName>Trace Data</ViewName>
       <UserString>FiltIdx=0;DescrEn=0;DescrHeight=4;FuncTrc=1;FindType=8;ColWidths=004B00870082005F004600E600C80096</UserString>
-      <TableColWidths>75 135 130 95 70 230 200 150</TableColWidths>
+      <TableColWidths>75 135 95 70 230 200 150</TableColWidths>
     </View>
     <View>
       <WinId>466</WinId>
@@ -93,8 +93,8 @@
       <flags>2</flags>
       <showCmd>3</showCmd>
       <MinPosition>
-        <xPos>-32000</xPos>
-        <yPos>-32000</yPos>
+        <xPos>-1</xPos>
+        <yPos>-1</yPos>
       </MinPosition>
       <MaxPosition>
         <xPos>-1</xPos>
@@ -1380,7 +1380,7 @@
       <Window>
         <RegID>50004</RegID>
         <PaneID>50004</PaneID>
-        <IsVisible>0</IsVisible>
+        <IsVisible>1</IsVisible>
         <IsFloating>0</IsFloating>
         <IsTabbed>0</IsTabbed>
         <IsActivated>0</IsActivated>
@@ -1390,11 +1390,11 @@
         <RecentRowIndex>0</RecentRowIndex>
         <RectRecentDocked>
           <Len>16</Len>
-          <Data>B3030000660000006D04000087010000</Data>
+          <Data>C7000000660000006D04000081000000</Data>
         </RectRecentDocked>
         <RectRecentFloat>
           <Len>16</Len>
-          <Data>8A000000A10000004A0100003F010000</Data>
+          <Data>0A0000000A0000006E0000006E000000</Data>
         </RectRecentFloat>
       </Window>
       <Window>

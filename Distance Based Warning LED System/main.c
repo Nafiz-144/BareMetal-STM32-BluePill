@@ -17,10 +17,10 @@ void gpio_init(void) {
     GPIOA->CRL |= (1 << 6);  // MODE = 00, CNF = 01 (floating input)
 }
 
-// Timer2 initialization for 1 µs resolution
+// Timer2 initialization for 1 ï¿½s resolution
 void tim_init(void) {
     RCC->APB1ENR |= (1 << 0);  // Enable TIM2
-    TIM2->PSC = 71;            // Prescaler: 72 MHz / (71 + 1) = 1 MHz (1 µs)
+    TIM2->PSC = 71;            // Prescaler: 72 MHz / (71 + 1) = 1 MHz 
     TIM2->ARR = 0xFFFF;        // Max auto-reload
     TIM2->CNT = 0;             // Reset counter
     TIM2->CR1 |= (1 << 0);     // Enable TIM2
@@ -36,7 +36,7 @@ void delay_us_tim2(uint16_t us) {
 uint32_t read_distance_cm(void) {
     // Trigger pulse
     GPIOA->BSRR = (1 << 0);      // TRIG HIGH
-    delay_us_tim2(10);           // 10 µs pulse
+    delay_us_tim2(10);           // 10 ï¿½s pulse
     GPIOA->BRR = (1 << 0);       // TRIG LOW
 
     // Wait for ECHO to go HIGH with timeout

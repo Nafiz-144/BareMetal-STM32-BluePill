@@ -18,9 +18,9 @@ int main(void) {
 
     while (1) {
         if (!(GPIOA->IDR & (1 << 0))) {  // Button pressed (active low)
-            delays(10);
+            delays(100);
             GPIOC->ODR ^= (1 << 13);  // Toggle LED
-            delays(10);
+            delays(100);
         }
     }
 }
@@ -28,6 +28,6 @@ int main(void) {
 void delays(int time) {
     int t;
     for (; time > 0; time--) {
-        for (t = 0; t < 100000; t++);
+        for (t = 0; t < 100; t++);
     }
 }
